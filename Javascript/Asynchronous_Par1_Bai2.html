@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image</title>
+</head>
+
+<body>
+    <div class="image"></div>
+
+    <script>
+        const imgContainer = document.querySelector('.image');
+        function createImage(imgPath) {
+            return new Promise(function (resolve, reject) {
+                const image = document.createElement('img');
+
+                image.src = imgPath;
+
+                image.onload = function () {
+                    imgContainer.append(image);
+                    resolve(image);
+                };
+
+                image.onerror = function () {
+                    reject('Không tìm thấy ảnh');
+                };
+            });
+        }
+        createImage('img/java.jpg')
+            .then(function () {
+                console.log('Image load');
+            })
+            .catch(function (error) {
+                console.error(error);
+            });
+    </script>
+</body>
+
+</html>

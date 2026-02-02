@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function from(l1, l2) {
+            const url = `https://geocode.xyz/${l1},${l2}?geoit=json`;
+            fetch(url)
+                .then(function (response) {
+                    return response.json();
+                })
+                .then(function (data) {
+                    console.log(data);
+                    console.log(data.city + "," + data.country);
+                })
+                .catch(function (error) {
+                    console.error(error.message);
+                });
+        }
+        from(52.508, 13.381);
+        from(19.037, 72.873);
+        from(-33.933, 18.474);
+    </script>
+
+</body>
+
+</html>

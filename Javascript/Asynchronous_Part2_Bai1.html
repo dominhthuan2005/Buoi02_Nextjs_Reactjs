@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>From</title>
+</head>
+
+<body>
+    <div class="countries"></div>
+
+    <script>
+        const countriesContainer = document.querySelector('.countries');
+
+        function renderCountry(country) {
+            const html = `
+        <article>
+          <h3>${country.name.common}</h3>
+          <p>Khu vực: ${country.region}</p>
+          <p>Dân số: ${country.population}</p>
+        </article>`;
+            countriesContainer.insertAdjacentHTML('beforeend', html);
+        }
+
+        function whereAmI(lat, lng) {
+            const geoURL = `https://geocode.xyz/${lat},${lng}?geoit=json`;
+
+            fetch(geoURL)
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('Không lấy được vị trí');
+                    }
+                    return response.json();
+                })
+                .then(function (locationData) {
+                    console.log(locationData.city + ',' + locationData.country);
+                    const countryURL = `https://restcountries.com/v3.1/name/${locationData.country}`;
+                    return fetch(countryURL);
+                })
+                .then(function (response) {
+                    if (!response.ok) {
+                        throw new Error('Không tìm thấy quốc gia');
+                    }
+                    return response.json();
+                })
+                .then(function (countryData) {
+                    renderCountry(countryData[0]);
+                })
+                .catch(function (error) {
+                    console.error('Lỗi:', error.message);
+                });
+        }
+        whereAmI(19.037, 72.873);
+    </script>
+</body>
+
+</html>
